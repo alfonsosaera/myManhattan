@@ -13,8 +13,8 @@ This document describes the use of a function to generate Manhattan plots using 
 
 ```{r, echo=FALSE}
 myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = "green",
-                        col = c("lightblue", "blue"), even.facet = FALSE, chrom.lab = NULL, 
-                        suggestiveline = 1e-05, genomewideline = 5e-08, font.size = 12, 
+                        col = c("lightblue", "blue"), even.facet = FALSE, chrom.lab = NULL,
+                        suggestiveline = 1e-05, genomewideline = 5e-08, font.size = 12,
                         axis.size = 0.5, significance = NULL, report = FALSE){
   require(ggplot2)
   require(stats)
@@ -39,7 +39,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     df$CHR <- factor(df$CHR, levels = unique(df$CHR), labels=chrom.lab)
     }
   }
-  g <- ggplot(df) + 
+  g <- ggplot(df) +
     geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = 1)
   if (!is.null(significance)){
     if (is.numeric(significance)){
@@ -75,8 +75,6 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
         }
       }
     }
-  # } else {
-  #   g <- g +  geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = 1)
   }
   if (even.facet){
     g <- g + facet_grid(.~CHR, scale = "free_x", switch = "x")
@@ -85,21 +83,21 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
   }
   g <- g + scale_colour_manual(values = chrom.col) +
     scale_y_continuous(expand = c(0, 0), limit = c(0, y.max),
-                       breaks = seq(from = 0, to = y.max, by = 2)) + 
+                       breaks = seq(from = 0, to = y.max, by = 2)) +
     scale_x_continuous() +
     theme(strip.background = element_blank(), legend.position = "none",
           axis.text.x = element_blank(), axis.ticks.x = element_blank(),
           panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.spacing.x=unit(0.1, "lines"),
-          axis.line.y = element_line(size = axis.size, color = "black"), 
+          axis.line.y = element_line(size = axis.size, color = "black"),
           axis.ticks.y = element_line(size = axis.size, color = "black"),
           axis.ticks.length = unit(axis.size * 10, "points"),
           plot.title = element_text(hjust = (0.5), size = font.size + 8),
-          axis.title.y = element_text(size = font.size + 5), 
-          axis.title.x = element_text(size = font.size + 5), 
+          axis.title.y = element_text(size = font.size + 5),
+          axis.title.x = element_text(size = font.size + 5),
           axis.text = element_text(size = font.size),
           strip.text.x = element_text(size = font.size))+
-    labs(title = graph.title, x = "Chromosome", y = y.title) 
+    labs(title = graph.title, x = "Chromosome", y = y.title)
   if (!is.null(highlight)) {
     if (is.numeric(highlight)){
       highlight <- as.character(df$SNP[df$P < highlight])
@@ -177,13 +175,13 @@ myManhattan(ex, graph.title = "My Manhattan Plot", font.size = 15)
 
 ## Indicative lines
 
-Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line. 
+Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.
 `genomewideline` Default 5e-08.
-`suggestiveline` Default 1e-5. 
+`suggestiveline` Default 1e-5.
 
 Set to FALSE to disable.
 
- 
+
 
 ```{r}
 myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, genomewideline = 1e-8)
@@ -253,7 +251,7 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, genom
 
 ## Significance level
 
-Specify significance levels with `significance` argument. This argument overrides `genomewideline` and `suggestiveline`. 
+Specify significance levels with `significance` argument. This argument overrides `genomewideline` and `suggestiveline`.
 When argument `report` is set to `TRUE` the info of the significant SNPs is printed.
 
 `significance` argument can set to a specific number
@@ -261,9 +259,9 @@ When argument `report` is set to `TRUE` the info of the significant SNPs is prin
 
 
 ```{r}
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4, 
-            genomewideline = 1e-6, even.facet = T, 
-            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = 3e-5, 
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
+            genomewideline = 1e-6, even.facet = T,
+            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = 3e-5,
             report = TRUE)
 ```
 
@@ -272,9 +270,9 @@ If `significance` is set to "Bonferroni", `genomewideline` is set to the correct
 
 
 ```{r}
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4, 
-            genomewideline = 1e-6, even.facet = T, 
-            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = "Bonferroni", 
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
+            genomewideline = 1e-6, even.facet = T,
+            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = "Bonferroni",
             report = TRUE)
 ```
 
@@ -283,9 +281,9 @@ If `significance` is set to "FDR", `genomewideline` is set to `0.05` and `sugges
 
 
 ```{r}
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4, 
-            genomewideline = 1e-6, even.facet = T, 
-            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = "FDR", 
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
+            genomewideline = 1e-6, even.facet = T,
+            chrom.lab = c(as.character(1:22),"X","Y","MT"), significance = "FDR",
             report = TRUE)
 ```
 
@@ -295,8 +293,8 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
 
 ```{r, eval=FALSE}
 myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = "green",
-                        col = c("lightblue", "blue"), even.facet = FALSE, chrom.lab = NULL, 
-                        suggestiveline = 1e-05, genomewideline = 5e-08, font.size = 12, 
+                        col = c("lightblue", "blue"), even.facet = FALSE, chrom.lab = NULL,
+                        suggestiveline = 1e-05, genomewideline = 5e-08, font.size = 12,
                         axis.size = 0.5, significance = NULL, report = FALSE){
   require(ggplot2)
   require(stats)
@@ -321,7 +319,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     df$CHR <- factor(df$CHR, levels = unique(df$CHR), labels=chrom.lab)
     }
   }
-  g <- ggplot(df) + 
+  g <- ggplot(df) +
     geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = 1)
   if (!is.null(significance)){
     if (is.numeric(significance)){
@@ -357,8 +355,6 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
         }
       }
     }
-  # } else {
-  #   g <- g +  geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = 1)
   }
   if (even.facet){
     g <- g + facet_grid(.~CHR, scale = "free_x", switch = "x")
@@ -367,21 +363,21 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
   }
   g <- g + scale_colour_manual(values = chrom.col) +
     scale_y_continuous(expand = c(0, 0), limit = c(0, y.max),
-                       breaks = seq(from = 0, to = y.max, by = 2)) + 
+                       breaks = seq(from = 0, to = y.max, by = 2)) +
     scale_x_continuous() +
     theme(strip.background = element_blank(), legend.position = "none",
           axis.text.x = element_blank(), axis.ticks.x = element_blank(),
           panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.spacing.x=unit(0.1, "lines"),
-          axis.line.y = element_line(size = axis.size, color = "black"), 
+          axis.line.y = element_line(size = axis.size, color = "black"),
           axis.ticks.y = element_line(size = axis.size, color = "black"),
           axis.ticks.length = unit(axis.size * 10, "points"),
           plot.title = element_text(hjust = (0.5), size = font.size + 8),
-          axis.title.y = element_text(size = font.size + 5), 
-          axis.title.x = element_text(size = font.size + 5), 
+          axis.title.y = element_text(size = font.size + 5),
+          axis.title.x = element_text(size = font.size + 5),
           axis.text = element_text(size = font.size),
           strip.text.x = element_text(size = font.size))+
-    labs(title = graph.title, x = "Chromosome", y = y.title) 
+    labs(title = graph.title, x = "Chromosome", y = y.title)
   if (!is.null(highlight)) {
     if (is.numeric(highlight)){
       highlight <- as.character(df$SNP[df$P < highlight])
@@ -416,10 +412,3 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
   return(g)
 }
 ```
-
-
-
-
-
-
-
