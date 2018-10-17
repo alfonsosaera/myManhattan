@@ -34,7 +34,6 @@ Using function with defaults settings
 myManhattan(ex)
 ```
 
-    ## Loading required package: ggplot2
 
 ![](img_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
@@ -60,8 +59,8 @@ myManhattan(ex, graph.title = "My Manhattan Plot", font.size = 15)
 Indicative lines
 ----------------
 
-Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.
-`genomewideline` default is 5e-08.
+Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.<br />
+`genomewideline` default is 5e-08.<br />
 `suggestiveline` default is 1e-5.
 
 Set to FALSE to disable.
