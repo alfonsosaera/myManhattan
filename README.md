@@ -190,3 +190,27 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
     ## rs10112382 rs10112382   8 128853579 9.641204e-16 9.566388e-11
 
 ![](img_files/figure-markdown_github/unnamed-chunk-15-1.png)
+
+Further customization
+---------------------
+
+Since the function returns a `ggplot` object you can add your own modifications.
+
+First, store the function output in an object
+
+``` r
+mM <- myManhattan(ex, graph.title = "My Manhattan Plot", even.facet = T,
+             chrom.lab = c(as.character(1:22),"X","Y","MT"))
+
+mM # check the plot
+```
+
+![](img_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+Then, add your modifications. In this case, changing the title of Y axis
+
+``` r
+mM + ylab(expression("Association to Phenotype (" * -log[10](italic(p)) *")"))
+```
+
+![](img_files/figure-markdown_github/unnamed-chunk-1-1.png)
