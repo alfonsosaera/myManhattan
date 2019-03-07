@@ -22,7 +22,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     if (length(unique(df$CHR)) != length(chrom.lab)){
       warning("Number of chrom.lab different of number of chromosomes in dataset, argument ignored.")
     } else {
-    df$CHR <- factor(df$CHR, levels = unique(df$CHR), labels=chrom.lab)
+      df$CHR <- factor(df$CHR, levels = unique(df$CHR), labels=chrom.lab)
     }
   }
   g <- ggplot(df) +
@@ -40,6 +40,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
       df$fdr <- p.adjust(df$P, "fdr")
       genomewideline <- 0.05
       suggestiveline <- FALSE
+      y.title <- expression(-log[10](italic(q)))
       g <- ggplot(df) +
         geom_point(aes(BP, -log10(fdr), colour = as.factor(CHR)), size = 1)
       if (!is.null(highlight)) {
@@ -50,14 +51,13 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
           warning("Cannot highlight SNPs not present in the dataset. Argument is ignored.")
         } else {
           g <- g + geom_point(data = df[which(df$SNP %in% highlight), ],
-                            aes(BP, -log10(fdr), group=SNP, colour=SNP),
-                            color = highlight.col, size = 1)
+                              aes(BP, -log10(fdr), group=SNP, colour=SNP),
+                              color = highlight.col, size = 1)
           highlight <- NULL
           y.max <- floor(max(-log10(df$fdr))) + 1
           if (y.max %% 2 != 0){
             y.max <- y.max + 1
           }
-          y.title <- expression(-log[10](italic(q)))
         }
       }
     }
@@ -92,8 +92,8 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
       warning("Cannot highlight SNPs not present in the dataset. Argument is ignored.")
     } else {
       g <- g + geom_point(data = df[which(df$SNP %in% highlight), ],
-                        aes(BP, -log10(P), group=SNP, colour=SNP),
-                        color = highlight.col, size = 1)
+                          aes(BP, -log10(P), group=SNP, colour=SNP),
+                          color = highlight.col, size = 1)
     }
   }
   if (suggestiveline){
