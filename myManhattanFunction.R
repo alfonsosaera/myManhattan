@@ -1,6 +1,8 @@
 myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = "green",
-                        col = c("lightblue", "blue"), even.facet = FALSE, chrom.lab = NULL,
-                        suggestiveline = 1e-05, genomewideline = 5e-08, font.size = 12,
+                        col = c("lightblue", "navy"), even.facet = FALSE, chrom.lab = NULL,
+                        suggestiveline = 1e-05, suggestivecolor = "blue",
+                        genomewideline = 5e-08, genomewidecolor = "red",
+                        font.size = 12,
                         axis.size = 0.5, significance = NULL, report = FALSE){
   require(ggplot2)
   require(stats)
@@ -97,10 +99,10 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     }
   }
   if (suggestiveline){
-    g <- g + geom_hline(yintercept = -log10(suggestiveline), color = "blue")
+    g <- g + geom_hline(yintercept = -log10(suggestiveline), color = suggestivecolor)
   }
   if (genomewideline){
-    g <- g + geom_hline(yintercept = -log10(genomewideline), color = "red")
+    g <- g + geom_hline(yintercept = -log10(genomewideline), color = genomewidecolor)
   }
   if (report){
     if (significance == "FDR"){
