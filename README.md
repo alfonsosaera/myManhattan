@@ -1,4 +1,16 @@
-# myManhattan
+Manhattan plot with ggplot
+================
+
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [Input data](#input-data)
+    -   [Add title](#add-title)
+    -   [Indicative lines](#indicative-lines)
+    -   [Mark specific points](#mark-specific-points)
+    -   [Graph appearance](#graph-appearance)
+    -   [Significance level](#significance-level)
+    -   [Further customization](#further-customization)
+
 I present here an R function to generate Manhattan plots using `ggplot`. It also returns a list of significant SNPs, according to different thresholds, if desired.
 
 ![](img_files/figure-markdown_github/unnamed-chunk-3-1.png)
@@ -47,6 +59,7 @@ Using function with defaults settings
 myManhattan(ex)
 ```
 
+    ## Loading required package: ggplot2
 
 ![](img_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
@@ -72,14 +85,14 @@ myManhattan(ex, graph.title = "My Manhattan Plot", font.size = 15)
 Indicative lines
 ----------------
 
-Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.<br />
-`genomewideline` default is 5e-08.<br />
+Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.
+`genomewideline` default is 5e-08.
 `suggestiveline` default is 1e-5.
 
 Set to FALSE to disable.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot",
+myManhattan(ex, graph.title = "My Manhattan Plot", 
             suggestiveline = FALSE, genomewideline = 1e-8)
 ```
 
@@ -88,11 +101,23 @@ myManhattan(ex, graph.title = "My Manhattan Plot",
 Both can be specified.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot",
+myManhattan(ex, graph.title = "My Manhattan Plot", 
             suggestiveline = 2e-4, genomewideline = 1e-6)
 ```
 
 ![](img_files/figure-markdown_github/unnamed-chunk-7-1.png)
+
+Line colors can also be customized if desired.
+`genomewidecolor` default is "red".
+`suggestivecolor` default is "blue".
+
+``` r
+myManhattan(ex, graph.title = "My Manhattan Plot", 
+            suggestiveline = 2e-4, suggestivecolor = "orange",
+            genomewideline = 1e-06, genomewidecolor = "pink")
+```
+
+![](img_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 Mark specific points
 --------------------
@@ -106,18 +131,18 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
             genomewideline = 1e-8, highlight = 1e-8)
 ```
 
-![](img_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 You can also mark specific SNP providing the names
 
 ``` r
-my.SNPs <- as.character(ex$SNP[ex$P < 1e-8])
+my.SNPs <- as.character(ex$SNP[ex$P < 1e-4])
 
 myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 1e-6,
             genomewideline = 1e-8, highlight = my.SNPs)
 ```
 
-![](img_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 Graph appearance
 ----------------
@@ -125,37 +150,56 @@ Graph appearance
 Proportion of each chromosome is modified with `even.facet` argument.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, 
             genomewideline = 1e-8, highlight = 1e-8, even.facet = T)
-```
-
-![](img_files/figure-markdown_github/unnamed-chunk-10-1.png)
-
-Specify chromosome names with `crhom.lab` argument
-
-``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
-            genomewideline = 1e-8, highlight = 1e-8, even.facet = T,
-            chrom.lab = c(as.character(1:22),"X","Y","MT"))
 ```
 
 ![](img_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
-Specify chromosome colors with `col` argument, default is `c("lightblue", "blue")`. See <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf> for a list of colors. See <https://www.r-bloggers.com/palettes-in-r/> for pallete use in R.
+Specify chromosome names with `crhom.lab` argument
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, genomewideline = 1e-8,
-            col = rainbow(25), even.facet = T, chrom.lab = c(as.character(1:22),"X","Y","MT"))
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, 
+            genomewideline = 1e-8, highlight = 1e-8, even.facet = T, 
+            chrom.lab = c(as.character(1:22),"X","Y","MT"))
 ```
 
 ![](img_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+Specify chromosome colors with `col` argument, default is `c("lightblue", "blue")`. See <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf> for a list of colors. See <https://www.r-bloggers.com/palettes-in-r/> for pallete use in R.
+
+<br> Example using `rainbow` default R pallete. If the colors are too bright, try `col = rainbow(25, s= 0.75)`.
+
+``` r
+myManhattan(ex, graph.title = "My Manhattan Plot", 
+            suggestiveline = FALSE, genomewideline = 1e-8,
+            col = rainbow(25), even.facet = T, 
+            chrom.lab = c(as.character(1:22),"X","Y","MT"))
+```
+
+![](img_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+Another example using the `dark` pallete of the `RColorBrewer` package. Note that the `brewer.pal` function must be used to generate the color pallete.
+
+``` r
+library(RColorBrewer)
+
+myManhattan(ex, graph.title = "My Manhattan Plot", 
+            col = brewer.pal(8, "Dark2"),
+            highlight = 1e-4,
+            suggestiveline = 1e-2, 
+            genomewideline = 1e-4, 
+            chrom.lab = c(as.character(1:22),"X","Y","MT"))
+```
+
+![](img_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 Significance level
 ------------------
 
 Specify significance levels with `significance` argument. This argument overrides `genomewideline` and `suggestiveline`. When argument `report` is set to `TRUE` the info of the significant SNPs is printed.
 
-`significance` argument can set to a specific number
+`significance` argument can be a specific number
 
 ``` r
 myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
@@ -171,7 +215,7 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
     ## rs10112382 rs10112382   8 128853579 9.641204e-16
     ## rs17769347 rs17769347  18  36989057 2.663669e-05
 
-![](img_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 If `significance` is set to "Bonferroni", `genomewideline` is set to the corrected significance level and `suggestiveline` is modified accordingly.
 
@@ -182,12 +226,12 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
             report = TRUE)
 ```
 
-    ## Bonferroni correction significance level: 5.039103e-07
+    ## Bonferroni correction significance level: 5.039103e-07 
     ##                   SNP CHR        BP            P
     ## rs4733560   rs4733560   8 128848183 2.789866e-09
     ## rs10112382 rs10112382   8 128853579 9.641204e-16
 
-![](img_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 If `significance` is set to "FDR", `genomewideline` is set to `0.05` and `suggestiveline` to `FALSE`.
 
@@ -202,7 +246,7 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
     ## rs4733560   rs4733560   8 128848183 2.789866e-09 1.384108e-04
     ## rs10112382 rs10112382   8 128853579 9.641204e-16 9.566388e-11
 
-![](img_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 Further customization
 ---------------------
@@ -214,16 +258,15 @@ First, store the function output in an object
 ``` r
 mM <- myManhattan(ex, graph.title = "My Manhattan Plot", even.facet = T,
              chrom.lab = c(as.character(1:22),"X","Y","MT"))
-
-mM # check the plot
+mM
 ```
 
-![](img_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
-Then, add your modifications. In this case, changing the title of Y axis
+Then, add your modifications. In this case, change the title of Y axis
 
 ``` r
 mM + ylab(expression("Association to Phenotype (" * -log[10](italic(p)) *")"))
 ```
 
-![](img_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-19-1.png)
