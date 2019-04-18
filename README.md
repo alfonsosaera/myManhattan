@@ -13,7 +13,7 @@ Manhattan plot with ggplot
 
 I present here an R function to generate Manhattan plots using `ggplot`. It also returns a list of significant SNPs, according to different thresholds, if desired.
 
-![](img_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](img_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Manhattan_plot), the free encyclopedia
 
@@ -92,7 +92,7 @@ Where to draw a "genome-wide sigificant" (red) or "suggestive" (blue) line.
 Set to FALSE to disable.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", 
+myManhattan(ex, graph.title = "My Manhattan Plot",
             suggestiveline = FALSE, genomewideline = 1e-8)
 ```
 
@@ -101,7 +101,7 @@ myManhattan(ex, graph.title = "My Manhattan Plot",
 Both can be specified.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", 
+myManhattan(ex, graph.title = "My Manhattan Plot",
             suggestiveline = 2e-4, genomewideline = 1e-6)
 ```
 
@@ -112,7 +112,7 @@ Line colors can also be customized if desired.
 `suggestivecolor` default is "blue".
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", 
+myManhattan(ex, graph.title = "My Manhattan Plot",
             suggestiveline = 2e-4, suggestivecolor = "orange",
             genomewideline = 1e-06, genomewidecolor = "pink")
 ```
@@ -150,7 +150,7 @@ Graph appearance
 Proportion of each chromosome is modified with `even.facet` argument.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, 
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
             genomewideline = 1e-8, highlight = 1e-8, even.facet = T)
 ```
 
@@ -159,8 +159,8 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
 Specify chromosome names with `crhom.lab` argument
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE, 
-            genomewideline = 1e-8, highlight = 1e-8, even.facet = T, 
+myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = FALSE,
+            genomewideline = 1e-8, highlight = 1e-8, even.facet = T,
             chrom.lab = c(as.character(1:22),"X","Y","MT"))
 ```
 
@@ -171,9 +171,9 @@ Specify chromosome colors with `col` argument, default is `c("lightblue", "blue"
 <br> Example using `rainbow` default R pallete. If the colors are too bright, try `col = rainbow(25, s= 0.75)`.
 
 ``` r
-myManhattan(ex, graph.title = "My Manhattan Plot", 
+myManhattan(ex, graph.title = "My Manhattan Plot",
             suggestiveline = FALSE, genomewideline = 1e-8,
-            col = rainbow(25), even.facet = T, 
+            col = rainbow(25), even.facet = T,
             chrom.lab = c(as.character(1:22),"X","Y","MT"))
 ```
 
@@ -184,11 +184,11 @@ Another example using the `dark` pallete of the `RColorBrewer` package. Note tha
 ``` r
 library(RColorBrewer)
 
-myManhattan(ex, graph.title = "My Manhattan Plot", 
+myManhattan(ex, graph.title = "My Manhattan Plot",
             col = brewer.pal(8, "Dark2"),
             highlight = 1e-4,
-            suggestiveline = 1e-2, 
-            genomewideline = 1e-4, 
+            suggestiveline = 1e-2,
+            genomewideline = 1e-4,
             chrom.lab = c(as.character(1:22),"X","Y","MT"))
 ```
 
@@ -226,7 +226,7 @@ myManhattan(ex, graph.title = "My Manhattan Plot", suggestiveline = 2e-4,
             report = TRUE)
 ```
 
-    ## Bonferroni correction significance level: 5.039103e-07 
+    ## Bonferroni correction significance level: 5.039103e-07
     ##                   SNP CHR        BP            P
     ## rs4733560   rs4733560   8 128848183 2.789866e-09
     ## rs10112382 rs10112382   8 128853579 9.641204e-16
