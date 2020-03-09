@@ -2,8 +2,10 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
                         col = c("lightblue", "navy"), even.facet = FALSE, chrom.lab = NULL,
                         suggestiveline = 1e-05, suggestivecolor = "blue",
                         genomewideline = 5e-08, genomewidecolor = "red",
-                        font.size = 12,
-                        axis.size = 0.5, significance = NULL, report = FALSE){
+                        font.size = 12, axis.size = 0.5, significance = NULL, report = FALSE
+                        inf.corr = 0.95){
+  myMin <- min(df$P[df$P != 0]) * inf.corr
+  df$P[df$P == 0] <- myMin
   require(ggplot2)
   require(stats)
   y.title <- expression(-log[10](italic(p)))
