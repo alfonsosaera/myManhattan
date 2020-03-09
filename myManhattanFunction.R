@@ -3,7 +3,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
                         suggestiveline = 1e-05, suggestivecolor = "blue",
                         genomewideline = 5e-08, genomewidecolor = "red",
                         font.size = 12, axis.size = 0.5, significance = NULL, report = FALSE
-                        inf.corr = 0.95){
+                        inf.corr = 0.95, y.step = 2){
   myMin <- min(df$P[df$P != 0]) * inf.corr
   df$P[df$P == 0] <- myMin
   require(ggplot2)
@@ -73,7 +73,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
   }
   g <- g + scale_colour_manual(values = chrom.col) +
     scale_y_continuous(expand = c(0, 0), limit = c(0, y.max),
-                       breaks = seq(from = 0, to = y.max, by = 2)) +
+                       breaks = seq(from = 0, to = y.max, by = y.step)) +
     scale_x_continuous() +
     theme(strip.background = element_blank(), legend.position = "none",
           axis.text.x = element_blank(), axis.ticks.x = element_blank(),
