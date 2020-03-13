@@ -3,7 +3,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
                         suggestiveline = 1e-05, suggestivecolor = "blue",
                         genomewideline = 5e-08, genomewidecolor = "red",
                         font.size = 12, axis.size = 0.5, significance = NULL, report = FALSE,
-                        inf.corr = 0.95, y.step = 2){
+                        inf.corr = 0.95, y.step = 2, point.size = 1, ){
   myMin <- min(df$P[df$P != 0]) * inf.corr
   df$P[df$P == 0] <- myMin
   require(ggplot2)
@@ -30,7 +30,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     }
   }
   g <- ggplot(df) +
-    geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = 1)
+    geom_point(aes(BP, -log10(P), colour = as.factor(CHR)), size = point.size)
   if (!is.null(significance)){
     if (is.numeric(significance)){
       genomewideline <- significance
@@ -46,7 +46,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
       suggestiveline <- FALSE
       y.title <- expression(-log[10](italic(q)))
       g <- ggplot(df) +
-        geom_point(aes(BP, -log10(fdr), colour = as.factor(CHR)), size = 1)
+        geom_point(aes(BP, -log10(fdr), colour = as.factor(CHR)), size = point.size)
       if (!is.null(highlight)) {
         if (is.numeric(highlight)){
           highlight <- as.character(df$SNP[df$P < highlight])
@@ -56,7 +56,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
         } else {
           g <- g + geom_point(data = df[which(df$SNP %in% highlight), ],
                               aes(BP, -log10(fdr), group=SNP, colour=SNP),
-                              color = highlight.col, size = 1)
+                              color = highlight.col, size = point.size)
           highlight <- NULL
           y.max <- floor(max(-log10(df$fdr))) + 1
           if (y.max %% 2 != 0){
@@ -97,7 +97,7 @@ myManhattan <- function(df, graph.title = "", highlight = NULL, highlight.col = 
     } else {
       g <- g + geom_point(data = df[which(df$SNP %in% highlight), ],
                           aes(BP, -log10(P), group=SNP, colour=SNP),
-                          color = highlight.col, size = 1)
+                          color = highlight.col, size = point.size)
     }
   }
   if (suggestiveline){
