@@ -19,6 +19,8 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Manhattan_plot), the free encyclo
 
 A Manhattan plot is a type of scatter plot, usually used to display data with a large number of data-points - many of non-zero amplitude, and with a distribution of higher-magnitude values, for instance in genome-wide association studies (GWAS). In GWAS Manhattan plots, genomic coordinates are displayed along the X-axis, with the negative logarithm of the association P-value for each single nucleotide polymorphism (SNP) displayed on the Y-axis, meaning that each dot on the Manhattan plot signifies a SNP. Because the strongest associations have the smallest P-values (e.g., 10−15), their negative logarithms will be the greatest (e.g., 15).
 
+Thus, a Manhattan plot can be used for multiple purposes, for example to shown differential methylation using the `myManhattan` function as shown in a recent paper published in [Clinical Epigenetics](https://clinicalepigeneticsjournal.biomedcentral.com/articles/10.1186/s13148-020-00843-3)
+
 Installation
 ============
 
