@@ -12,6 +12,8 @@ library(ggplot2)
 
 ex <- read.table("example.txt")
 
+ex$CHR <- factor(ex$CHR, levels = unique(ex$CHR), labels = c(1:22,"X","Y","MT")) # labels cannot be repetated
+
 hola.df <- ex %>%
   group_by(CHR) %>%
   summarise(first=min(BP))
@@ -26,11 +28,6 @@ tmp.df <- ex %>%
   mutate(new_BP = BP - min(BP) + 1) %>%
   summarise(CHR_size = max(new_BP) + separator) %>%
   mutate(cum_size = cumsum(as.numeric(CHR_size )) - CHR_size)
-
-# tmp.df$cum_size_sep <- 0
-# for (i in 2:nrow(tmp.df)){
-#   tmp.df$cum_size_sep[i] <- tmp.df$cum_size[i-1] + separator
-# }
 
 ex <- ex %>%
   filter(CHR != 25) %>%
@@ -56,10 +53,15 @@ polygon.df <- decoration.df %>%
 
 max_y <- max(-log10(ex$P)) * 1.01
 
+y.max <- floor(max(-log10(ex$P))) + 1
+if (y.max %% 2 != 0){
+  y.max <- y.max + 1
+}
+
 ggplot(ex) +
   geom_polygon(data = polygon.df,aes(x=x,y=y), fill = "#ebebeb") + # panel.background = element_rect(fill = "grey92", colour = NA)
   geom_point(aes(x=plot_BP, y=-log10(P), color = as.factor(CHR))) +
-  scale_y_continuous(limits = c(0, max_y), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, y.max), expand = c(0, 0)) +
   scale_x_continuous(expand = c(0.01, 0),
                      breaks = decoration.df$center, labels = decoration.df$CHR) +
   labs(x="", y= expression(-log[10](italic(p)))) +
@@ -71,3 +73,30 @@ ggplot(ex) +
         axis.ticks.x = element_blank(),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
+
+
+suggestiveline = 1e-05
+suggestivecolor = "blue"
+genomewideline = 5e-08
+genomewidecolor = "red"
+
+p <- ggplot(ex) +
+  geom_polygon(data = polygon.df,aes(x=x,y=y), fill = "#ebebeb") + # panel.background = element_rect(fill = "grey92", colour = NA)
+  geom_point(aes(x=plot_BP, y=-log10(P), color = as.factor(CHR))) +
+  scale_y_continuous(limits = c(0, y.max), expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0.01, 0),
+                     breaks = decoration.df$center, labels = c(1:15,"",17,"",19,"",21,"","X","Y","")) +
+  labs(x="", y= expression(-log[10](italic(p)))) +
+  scale_color_manual(values = rep(c("lightblue", "navy"), 13)) +
+  theme(strip.background = element_blank(), legend.position = "none",
+        panel.background = element_rect(fill = "white", 
+                                        colour = NA),
+        axis.line.y = element_line(color = "black"),
+        axis.ticks.x = element_blank(),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())  
+
+print(p)
+
+p + guides(x = guide_axis(n.dodge = 2)) + 
+  annotate("segment", x=min(ex$plot_BP), y=-log10(suggestiveline), xend = max(ex$plot_BP), yend=-log10(suggestiveline), color = suggestivecolor) + 
+  annotate("segment", x=min(ex$plot_BP), y=-log10(genomewideline), xend = max(ex$plot_BP), yend=-log10(genomewideline), color = genomewidecolor)
